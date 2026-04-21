@@ -1,51 +1,78 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" dir="ltr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dice Simulator - Probability Project</title>
     <link rel="stylesheet" href="style.css">
-    <!-- Chart.js for Visualization -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     <div class="container">
+        
+        <!-- Language toggle placed absolutely so it never moves -->
+        <button id="langToggle" class="lang-toggle" type="button" data-i18n="toggleLabel">العربية</button>
+
         <header class="header">
-            <img src="Picture2-1.jpg" alt="Faculty Logo" class="logo left-logo">
+            <img src="Picture2-1.jpg" alt="Faculty of Artificial Intelligence logo" class="logo left-logo">
             <div class="header-text">
-                <h1>Dice Simulator 🎲</h1>
-                <p class="subtitle">A visual demonstration of probability and the Law of Large Numbers</p>
+                <span class="badge" data-i18n="badge">Probability Project</span>
+                <h1 data-i18n="title">Dice Simulator 🎲</h1>
+                <p class="subtitle" data-i18n="subtitle">In short: roll the dice as many times as you want and see how often each face appears.</p>
             </div>
-            <img src="cropped-Logo-blue.png" alt="University Logo" class="logo right-logo">
+            <img src="cropped-Logo-blue.png" alt="Horus University logo" class="logo right-logo">
         </header>
+
+        <section class="intro">
+            <div class="intro-card">
+                <h2 data-i18n="introTitle">What does this site do?</h2>
+                <p data-i18n="introDescription">The simulation takes any positive number of dice and rolls, then counts how often each face appears and shows the results in a table and chart.</p>
+            </div>
+
+            <div class="intro-grid">
+                <div class="info-card">
+                    <span class="info-title" data-i18n="inputsCardTitle">Inputs</span>
+                    <p data-i18n="inputsCardText">Enter any positive number of dice and choose how many rolls you want to test.</p>
+                </div>
+
+                <div class="info-card">
+                    <span class="info-title" data-i18n="processCardTitle">What happens</span>
+                    <p data-i18n="processCardText">Each roll produces random values from 1 to 6, and the program counts every face that appears.</p>
+                </div>
+
+                <div class="info-card">
+                    <span class="info-title" data-i18n="resultCardTitle">Result</span>
+                    <p data-i18n="resultCardText">The chart shows the most frequent faces so you can understand the distribution easily.</p>
+                </div>
+            </div>
+        </section>
 
         <div class="controls">
             <div class="input-group">
-                <label for="numDice">Number of Dice (1-5):</label>
-                <input type="number" id="numDice" min="1" max="5" value="1">
+                <label for="numDice" data-i18n="diceLabel">Number of dice:</label>
+                <input type="number" id="numDice" min="1" step="1" value="1">
             </div>
 
             <div class="input-group">
-                <label for="numRolls">Number of Rolls:</label>
+                <label for="numRolls" data-i18n="rollsLabel">Number of rolls:</label>
                 <input type="number" id="numRolls" min="1" max="100000" value="1000">
             </div>
 
-            <button id="rollBtn">Roll Dice Simulation</button>
+            <button id="rollBtn" class="primary-btn" data-i18n="rollButton">Run simulation</button>
         </div>
 
         <div class="results">
-            <h2>Simulation Results</h2>
-            <!-- Visualization Requirement -->
+            <h2 data-i18n="resultsTitle">Results</h2>
             <div class="chart-container">
                 <canvas id="resultChart"></canvas>
             </div>
-            
-            <!-- Output clearly displayed Requirement -->
+
             <div id="stats">
-                <p class="empty-state">Enter configurations and click the button to see simulation results here!</p>
+                <p class="empty-state" data-i18n="emptyState">Enter the values above and click "Run simulation" to see the result here.</p>
             </div>
         </div>
     </div>
+    
     <script src="app.js"></script>
 </body>
 </html>
