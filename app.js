@@ -1,8 +1,10 @@
 // الملف ده مسؤول عن تشغيل المحاكاة وحساب النتائج وعرضها في الرسم البياني
-let chartInstance = null;
-let currentLanguage = 'en';
-let lastSimulation = null;
+// دي المتغيرات الأساسية اللي بنستخدمها في كل الملف
+let chartInstance = null; // دي بتخزن الرسم البياني علشان نمسحه ونعمل واحد جديد كل مرة
+let currentLanguage = 'en'; // دي اللغة الحالية - بنبدأ بالإنجليزي
+let lastSimulation = null; // دي بتخزن آخر محاكاة عشان نقدر نعرضها تاني لما نغير اللغة
 
+// دي الترجمات للنصوص في الموقع - بالعربي والإنجليزي
 const translations = {
     en: {
         pageTitle: 'Dice Simulator - Probability Project',
@@ -36,7 +38,20 @@ const translations = {
         chartDatasetLabel: 'Face frequency',
         yAxisTitle: 'Number of occurrences',
         xAxisTitle: 'Die face',
-        toggleLabel: 'العربية'
+        toggleLabel: 'العربية',
+        probabilityTitle: 'Probability Law',
+        formulaLabel: 'Probability Formula:',
+        numerator: 'Number of favorable outcomes',
+        denominator: 'Total number of possible outcomes',
+        howToCalculate: 'How to calculate?',
+        step1: 'Count how many times each face appeared (favorable outcomes)',
+        step2: 'Divide by the total number of all faces shown (total outcomes)',
+        step3: 'Multiply by 100 to get the percentage',
+        exampleTitle: 'Example',
+        exampleText: 'If you roll 1 die 100 times and face 6 appears 17 times:',
+        calcStep1: 'Step 1:',
+        calcStep2: 'Step 2:',
+        calcStep3: 'Step 3:'
     },
     ar: {
         pageTitle: 'محاكي النرد - مشروع الاحتمالات',
@@ -70,15 +85,28 @@ const translations = {
         chartDatasetLabel: 'تكرار كل رقم',
         yAxisTitle: 'عدد المرات',
         xAxisTitle: 'رقم النرد',
-        toggleLabel: 'English'
+        toggleLabel: 'English',
+        probabilityTitle: 'قانون الاحتمال',
+        formulaLabel: 'قانون الاحتمال:',
+        numerator: 'عدد النتائج المطلوبة',
+        denominator: 'إجمالي عدد النتائج الممكنة',
+        howToCalculate: 'كيف نحسب؟',
+        step1: 'عد عدد المرات اللي ظهر فيها كل رقم (النتائج المطلوبة)',
+        step2: 'اقسم على إجمالي عدد كل الأرقام اللي ظهرت (النتائج الممكنة)',
+        step3: 'اضرب في 100 علشان تحصل على النسبة المئوية',
+        exampleTitle: 'مثال',
+        exampleText: 'لو رميت نرد واحد 100 مرة وظهر الرقم 6 17 مرة:',
+        calcStep1: 'الخطوة 1:',
+        calcStep2: 'الخطوة 2:',
+        calcStep3: 'الخطوة 3:'
     }
 };
 
-const languageToggleButton = document.getElementById('langToggle');
-const rollButton = document.getElementById('rollBtn');
-const statsContainer = document.getElementById('stats');
+const languageToggleButton = document.getElementById('langToggle'); // زر تغيير اللغة
+const rollButton = document.getElementById('rollBtn'); // زر تشغيل المحاكاة
+const statsContainer = document.getElementById('stats'); // المكان اللي بنعرض فيه النتائج
 
-// دي بتنسق الأرقام حسب اللغة المختارة
+// دي دالة بتنسق الأرقام حسب اللغة المختارة (عربي أو إنجليزي)
 function formatNumber(value, fractionDigits = 0) {
     return new Intl.NumberFormat(currentLanguage, {
         minimumFractionDigits: fractionDigits,
@@ -86,15 +114,16 @@ function formatNumber(value, fractionDigits = 0) {
     }).format(value);
 }
 
-// دي بتحدث النصوص الثابتة كلها في الصفحة حسب اللغة
+// دي الدالة اللي بتغير اللغة في كل الصفحة - بتغير النصوص واتجاه الكتابة
 function applyLanguage(language) {
-    currentLanguage = language;
-    const translation = translations[currentLanguage];
+    currentLanguage = language; // بنحفظ اللغة الجديدة
+    const translation = translations[currentLanguage]; // بنجيب الترجمات بتاعت اللغة دي
 
-    document.documentElement.lang = currentLanguage;
-    document.documentElement.dir = currentLanguage === 'ar' ? 'rtl' : 'ltr';
-    document.title = translation.pageTitle;
+    document.documentElement.lang = currentLanguage; // بنغير لغة الصفحة
+    document.documentElement.dir = currentLanguage === 'ar' ? 'rtl' : 'ltr'; // بنغير الاتجاه (يمين لليسار للعربي)
+    document.title = translation.pageTitle; // بنغير عنوان الصفحة
 
+    // بنروح على كل عنصر في الصفحة عنده data-i18n ونغير النص بتاعه
     document.querySelectorAll('[data-i18n]').forEach((element) => {
         const translationKey = element.dataset.i18n;
         if (translation[translationKey]) {
@@ -102,6 +131,7 @@ function applyLanguage(language) {
         }
     });
 
+    // لو فيه محاكاة سابقة، بنعرضها تاني باللغة الجديدة
     if (lastSimulation) {
         renderResults(lastSimulation);
     } else {
@@ -109,133 +139,182 @@ function applyLanguage(language) {
     }
 }
 
-// دي بتربط زر تشغيل المحاكاة بالدالة الرئيسية
+// دي لما المستخدم يضغط على زر تشغيل المحاكاة
 rollButton.addEventListener('click', () => {
-    const numDice = parseInt(document.getElementById('numDice').value);
-    const numRolls = parseInt(document.getElementById('numRolls').value);
+    const numDice = parseInt(document.getElementById('numDice').value); // بنجيب عدد النرد اللي المستخدم دخل
+    const numRolls = parseInt(document.getElementById('numRolls').value); // بنجيب عدد الرميات اللي المستخدم دخل
 
-    // نتأكد إن عدد النرد رقم صحيح وموجب، من غير حد أقصى
+    // بنتأكد إن عدد النرد رقم صحيح وموجب
     if (isNaN(numDice) || numDice < 1) {
         alert(translations[currentLanguage].alertDice);
-        return;
+        return; // بنوقف لو الرقم مش صح
     }
 
-    // نتأكد إن عدد الرميات رقم صحيح وموجب
+    // بنتأكد إن عدد الرميات رقم صحيح وموجب
     if (isNaN(numRolls) || numRolls < 1) {
         alert(translations[currentLanguage].alertRolls);
-        return;
+        return; // بنوقف لو الرقم مش صح
     }
 
-    // لو البيانات سليمة، نبدأ المحاكاة
+    // لو كل حاجة تمام، بنبدأ المحاكاة
     simulateDice(numDice, numRolls);
 });
 
-// دي بتبدل اللغة بين إنجليزي وعربي
+// دي لما المستخدم يضغط على زر تغيير اللغة
 languageToggleButton.addEventListener('click', () => {
-    const nextLanguage = currentLanguage === 'en' ? 'ar' : 'en';
-    applyLanguage(nextLanguage);
+    const nextLanguage = currentLanguage === 'en' ? 'ar' : 'en'; // بنحسب اللغة الجديدة
+    applyLanguage(nextLanguage); // بنطبق اللغة الجديدة
 });
 
-// الدالة دي بترمي النرد عدد مرات كبير وتحسب كل رقم ظهر كام مرة
+// دي الدالة الأساسية اللي بترمي النرد وتحسب النتائج
 function simulateDice(numDice, numRolls) {
-    const frequencies = {};
+    const frequencies = {}; // دي اللي هتحتفظ بعدد مرات ظهور كل رقم
 
-    // بنجهز عداد لكل رقم من أرقام النرد علشان النتائج تطلع كاملة وواضحة
+    // بنجهز عداد لكل رقم من 1 لـ 6 ونبديه بصفر
     for (let face = 1; face <= 6; face++) {
         frequencies[face] = 0;
     }
 
     // هنا بنكرر الرمية بنفس عدد المرات اللي المستخدم دخلها
     for (let rollIndex = 0; rollIndex < numRolls; rollIndex++) {
+        // وكل مرة بنرمي كل النرد اللي المستخدم محددها
         for (let dieIndex = 0; dieIndex < numDice; dieIndex++) {
             // كل نرد بيطلع رقم عشوائي من 1 لـ 6
             const faceValue = Math.floor(Math.random() * 6) + 1;
-            frequencies[faceValue]++;
+            frequencies[faceValue]++; // بنزيد العداد بتاع الرقم ده
         }
     }
 
+    // بنخزن بيانات المحاكاة دي علشان نقدر نعرضها تاني
     lastSimulation = {
         numDice,
         numRolls,
         frequencies
     };
 
-    // وبعدها بنعرض النتائج حسب اللغة الحالية
+    // وبعدها بنعرض النتائج في الصفحة
     renderResults(lastSimulation);
 }
 
-// دي بتبني النصوص والجدول والرسم البياني من نفس بيانات المحاكاة
+// دي الدالة اللي بتبني HTML بتاع النتائج وتعرضها في الصفحة
 function renderResults(simulationData) {
-    const translation = translations[currentLanguage];
-    const labels = [];
-    const dataCounts = [];
-    const totalFaces = simulationData.numDice * simulationData.numRolls;
+    const translation = translations[currentLanguage]; // بنجيب الترجمات بتاعت اللغة الحالية
+    const labels = []; // دي عشان نحفظ أرقام النرد للرسم البياني
+    const dataCounts = []; // دي عشان نحفظ عدد مرات ظهور كل رقم للرسم البياني
+    const totalFaces = simulationData.numDice * simulationData.numRolls; // إجمالي عدد الأرقام اللي طلعت
 
+    // بنبدي HTML بتاع العنوان
     let statsHtml = `<h3>${translation.summaryTitle}</h3>`;
     statsHtml += `<p>${translation.rollsCountLabel}: <strong>${formatNumber(simulationData.numRolls)}</strong> | ${translation.dicePerRollLabel}: <strong>${formatNumber(simulationData.numDice)}</strong> | ${translation.totalFacesLabel}: <strong>${formatNumber(totalFaces)}</strong></p>`;
+
+    // بنضيف قسم قانون الاحتمال
+    statsHtml += `<div class="probability-law-section">`;
+    statsHtml += `<h4>${translation.probabilityTitle}</h4>`;
+    statsHtml += `<div class="law-formula-display">`;
+    statsHtml += `<span class="formula-main">P(E) = </span>`;
+    statsHtml += `<div class="fraction">`;
+    statsHtml += `<span class="numerator">${translation.numerator}</span>`;
+    statsHtml += `<span class="fraction-line"></span>`;
+    statsHtml += `<span class="denominator">${translation.denominator}</span>`;
+    statsHtml += `</div>`;
+    statsHtml += `</div>`;
+    statsHtml += `</div>`;
+
+    // بنبدأ شبكة الكروت بتاعة الأرقام
     statsHtml += `<div class="stats-grid">`;
 
+    // بنلف على كل رقم من 1 لـ 6
     for (let face = 1; face <= 6; face++) {
-        labels.push(formatNumber(face));
-        dataCounts.push(simulationData.frequencies[face]);
+        labels.push(formatNumber(face)); // بنضيف الرقم للرسم البياني
+        dataCounts.push(simulationData.frequencies[face]); // بنضيف العدد للرسم البياني
 
-        // دي النسبة التجريبية: الرقم ده ظهر قد إيه من إجمالي الأرقام اللي طلعت
-        const probability = (simulationData.frequencies[face] / totalFaces) * 100;
+        // الاحتمال التجريبي الفعلي - الرقم ده ظهر قد إيه بالمئة
+        const actualProbability = (simulationData.frequencies[face] / totalFaces) * 100;
+        // الاحتمال النظري المتوقع - نظريًا لازم يبقى 16.67% لكل رقم (1/6)
+        const expectedProbability = 16.67;
+        // بنقارن النتيجة الفعلية مع المتوقع
+        const comparison = actualProbability > expectedProbability ? 'higher' : (actualProbability < expectedProbability ? 'lower' : 'equal');
+        const comparisonText = comparison === 'higher' ? '↑ Higher' : (comparison === 'lower' ? '↓ Lower' : '✓ Equal');
+        const comparisonClass = comparison === 'higher' ? 'higher' : (comparison === 'lower' ? 'lower' : 'equal');
 
+        // بنبني كارت لكل رقم فيه كل التفاصيل
         statsHtml += `
-            <div class="stat-card">
+            <div class="stat-card ${comparisonClass}">
                 <span class="stat-label">${translation.faceLabel}</span>
                 <strong>${formatNumber(face)}</strong>
-                <div>${translation.countLabel}: ${formatNumber(simulationData.frequencies[face])}</div>
-                <div>${translation.percentageLabel}: ${formatNumber(probability, 2)}%</div>
+                <div class="result-count">${translation.countLabel}: ${formatNumber(simulationData.frequencies[face])}</div>
+                <div class="calculation-steps">
+                    <div class="calc-step">
+                        <span class="calc-label">P(${face}) = </span>
+                        <span class="calc-value">${formatNumber(simulationData.frequencies[face])} / ${formatNumber(totalFaces)}</span>
+                    </div>
+                    <div class="calc-step">
+                        <span class="calc-label">= </span>
+                        <span class="calc-value">${(simulationData.frequencies[face] / totalFaces).toFixed(4)}</span>
+                    </div>
+                    <div class="calc-step">
+                        <span class="calc-label">= </span>
+                        <span class="calc-value actual-result">${formatNumber(actualProbability, 2)}%</span>
+                    </div>
+                </div>
+                <div class="prediction-section">
+                    <div class="expected-prob">
+                        <span class="pred-label">Expected:</span>
+                        <span class="pred-value">${expectedProbability}%</span>
+                    </div>
+                    <div class="comparison-badge ${comparisonClass}">
+                        ${comparisonText}
+                    </div>
+                </div>
             </div>`;
     }
 
     statsHtml += `</div>`;
-    statsContainer.innerHTML = statsHtml;
+    statsContainer.innerHTML = statsHtml; // بنعرض الHTML في الصفحة
 
-    // وبعدها بنرسم الشكل البياني علشان يبقى الفهم أسرع
+    // وبعدها بنرسم الرسم البياني
     updateChart(labels, dataCounts, totalFaces, simulationData.numDice);
 }
 
-// الدالة دي مسؤولة عن رسم المخطط الشريطي وتحديثه كل مرة
+// دي الدالة اللي بترسم الرسم البياني باستخدام مكتبة Chart.js
 function updateChart(labels, data, totalFaces, numDice) {
-    const ctx = document.getElementById('resultChart').getContext('2d');
+    const ctx = document.getElementById('resultChart').getContext('2d'); // بنجيب مكان الرسم في الصفحة
 
     // لو فيه رسم قديم، نمسحه الأول عشان الجديد ما يتراكبش عليه
     if (chartInstance) {
         chartInstance.destroy();
     }
 
-    const translation = translations[currentLanguage];
+    const translation = translations[currentLanguage]; // بنجيب الترجمات بتاعت اللغة الحالية
 
+    // هنا بنعمل الرسم البياني الجديد
     chartInstance = new Chart(ctx, {
-        type: 'bar',
+        type: 'bar', // نوع الرسم - أعمدة
         data: {
-            labels: labels,
+            labels: labels, // أرقام النرد (1-6)
             datasets: [{
-                label: translation.chartDatasetLabel,
-                data: data,
-                backgroundColor: 'rgba(243, 178, 41, 0.8)',
-                borderColor: 'rgba(0, 45, 98, 1)',
-                borderWidth: 2,
-                borderRadius: 6
+                label: translation.chartDatasetLabel, // اسم البيانات
+                data: data, // عدد مرات ظهور كل رقم
+                backgroundColor: 'rgba(243, 178, 41, 0.8)', // لون الأعمدة - ذهبي
+                borderColor: 'rgba(0, 45, 98, 1)', // لون الحدود - أزرق
+                borderWidth: 2, // سمك الحدود
+                borderRadius: 6 // تقريب حواف الأعمدة
             }]
         },
         options: {
-            responsive: true,
-            maintainAspectRatio: false,
+            responsive: true, // الرسم بيستجيب لحجم الشاشة
+            maintainAspectRatio: false, // بنسمحله يغير النسب
             plugins: {
                 title: {
-                    display: true,
-                    text: numDice === 1 ? translation.chartTitleSingle : translation.chartTitleMultiple,
+                    display: true, // بنعرض العنوان
+                    text: numDice === 1 ? translation.chartTitleSingle : translation.chartTitleMultiple, // العنوان حسب عدد النرد
                     font: { size: 16 }
                 },
                 tooltip: {
                     callbacks: {
                         label: function(context) {
-                            const value = context.raw;
-                            const percentage = (value / totalFaces) * 100;
+                            const value = context.raw; // عدد المرات
+                            const percentage = (value / totalFaces) * 100; // بنحسب النسبة المئوية
                             return `${translation.countLabel}: ${formatNumber(value)} (${formatNumber(percentage, 2)}%)`;
                         }
                     }
@@ -243,17 +322,17 @@ function updateChart(labels, data, totalFaces, numDice) {
             },
             scales: {
                 y: {
-                    beginAtZero: true,
+                    beginAtZero: true, // المحور Y يبدي من الصفر
                     title: {
                         display: true,
-                        text: translation.yAxisTitle,
+                        text: translation.yAxisTitle, // عنوان المحور Y
                         font: { weight: 'bold' }
                     }
                 },
                 x: {
                     title: {
                         display: true,
-                        text: translation.xAxisTitle,
+                        text: translation.xAxisTitle, // عنوان المحور X
                         font: { weight: 'bold' }
                     }
                 }

@@ -1,20 +1,22 @@
 /* استدعاء خط Poppins علشان الشكل يبقى نضيف وواضح */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
 
+/* دي الإعدادات الأساسية للصفكل كلها */
 * {
-    box-sizing: border-box;
+    box-sizing: border-box; /* بنخلي الحساب بيشمل الحدود والبادينج */
 }
 
+/* تنسيق جسم الصفحة - الخلفية والمحاذاة */
 body {
-    font-family: 'Poppins', sans-serif;
-    background: linear-gradient(135deg, #f5f7fa 0%, #d9e2ef 100%);
-    min-height: 100vh;
+    font-family: 'Poppins', sans-serif; /* الخط بتاعنا */
+    background: linear-gradient(135deg, #f5f7fa 0%, #d9e2ef 100%); /* خلفية متدرجة رمادية فاتحة */
+    min-height: 100vh; /* ارتفاع كامل للشاشة */
     margin: 0;
-    padding: 40px 20px;
-    color: #2d3436;
+    padding: 40px 20px; /* مسافات حول المحتوى */
+    color: #2d3436; /* لون النصوص */
     display: flex;
-    justify-content: center;
-    align-items: flex-start;
+    justify-content: center; /* توسيط أفقي */
+    align-items: flex-start; /* محاذاة من فوق */
 }
 
 /* الكارت الرئيسي اللي شايل كل محتوى الصفحة */
@@ -55,6 +57,7 @@ body {
     margin-bottom: 12px;
 }
 
+/* الشارة اللي فوق العنوان */
 .badge {
     display: inline-block;
     background: rgba(243, 178, 41, 0.14);
@@ -67,6 +70,7 @@ body {
     margin-bottom: 12px;
 }
 
+/* زر تغيير اللغة */
 .lang-toggle {
     position: absolute;
     top: 20px;
@@ -91,6 +95,7 @@ body {
     background: #f3f7fc;
 }
 
+/* اللوجوهات بتاعة الجامعات */
 .logo {
     max-width: 120px;
     height: auto;
@@ -98,6 +103,7 @@ body {
     flex-shrink: 0;
 }
 
+/* العنوان الرئيسي بتاع الصفحة */
 h1 {
     color: #002D62;
     margin: 0 0 8px 0;
@@ -105,6 +111,7 @@ h1 {
     font-weight: 700;
 }
 
+/* الوصف اللي تحت العنوان */
 .subtitle {
     color: #5f6b76;
     margin: 0 auto;
@@ -118,6 +125,163 @@ h1 {
     margin-bottom: 30px;
 }
 
+/* قسم قانون الاحتمال القديم - مش مستخدم دلوقتي */
+.probability-section {
+    margin-bottom: 35px;
+}
+
+.probability-section h2 {
+    color: #002D62;
+    text-align: center;
+    font-size: 1.8em;
+    margin-bottom: 20px;
+}
+
+.law-card {
+    background: linear-gradient(135deg, #fff9e6 0%, #fff3cd 100%);
+    padding: 25px;
+    border-radius: 18px;
+    margin-bottom: 20px;
+    box-shadow: 0 8px 20px rgba(243, 178, 41, 0.15);
+    border: 2px solid rgba(243, 178, 41, 0.3);
+}
+
+.law-formula {
+    margin-bottom: 20px;
+}
+
+.formula-text {
+    display: block;
+    font-weight: 700;
+    color: #002D62;
+    margin-bottom: 15px;
+    font-size: 1.1em;
+}
+
+.formula-display {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.formula-main {
+    font-size: 1.4em;
+    font-weight: 700;
+    color: #002D62;
+}
+
+.fraction {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: white;
+    padding: 15px 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+    min-width: 200px;
+}
+
+.numerator {
+    font-weight: 600;
+    color: #002D62;
+    text-align: center;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #F3B229;
+    width: 100%;
+}
+
+.fraction-line {
+    height: 2px;
+    background: #F3B229;
+    width: 100%;
+    margin: 8px 0;
+}
+
+.denominator {
+    font-weight: 600;
+    color: #002D62;
+    text-align: center;
+    padding-top: 8px;
+    width: 100%;
+}
+
+.law-explanation {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    border-left: 4px solid #002D62;
+}
+
+.law-explanation h3 {
+    color: #002D62;
+    margin: 0 0 12px 0;
+    font-size: 1.2em;
+}
+
+.law-explanation ul {
+    margin: 0;
+    padding-left: 20px;
+}
+
+.law-explanation li {
+    margin-bottom: 8px;
+    color: #4b5563;
+    line-height: 1.6;
+}
+
+.example-card {
+    background: linear-gradient(135deg, #002D62 0%, #004599 100%);
+    color: white;
+    padding: 25px;
+    border-radius: 18px;
+    box-shadow: 0 8px 20px rgba(0, 45, 98, 0.2);
+}
+
+.example-card h3 {
+    margin: 0 0 12px 0;
+    font-size: 1.3em;
+}
+
+.example-card p {
+    margin: 0 0 15px 0;
+    line-height: 1.7;
+    color: rgba(255, 255, 255, 0.95);
+}
+
+.example-calculation {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 20px;
+    border-radius: 12px;
+}
+
+.calc-step {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 10px;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 8px;
+}
+
+.calc-step:last-child {
+    margin-bottom: 0;
+}
+
+.calc-label {
+    font-weight: 700;
+    min-width: 80px;
+    color: #F3B229;
+}
+
+.calc-value {
+    font-family: 'Courier New', monospace;
+    font-size: 1.1em;
+    color: white;
+}
+
+/* الكارت الأزرق اللي فيه الشرح */
 .intro-card {
     background: linear-gradient(135deg, #002D62 0%, #004599 100%);
     color: white;
@@ -138,12 +302,14 @@ h1 {
     color: rgba(255, 255, 255, 0.95);
 }
 
+/* الشبكة اللي فيها الكروت البيضاء الثلاثة */
 .intro-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
     gap: 15px;
 }
 
+/* الكروت البيضاء الصغيرة */
 .info-card {
     background: #ffffff;
     padding: 18px;
@@ -195,6 +361,7 @@ label {
     font-size: 0.95em;
 }
 
+/* حقول الإدخال */
 input {
     padding: 12px 15px;
     border: 2px solid #dfe6e9;
@@ -214,6 +381,7 @@ input:focus {
     box-shadow: 0 0 0 3px rgba(243, 178, 41, 0.2);
 }
 
+/* زر تشغيل المحاكاة */
 .primary-btn {
     background: linear-gradient(135deg, #002D62 0%, #004599 100%);
     color: white;
@@ -254,6 +422,7 @@ input:focus {
     font-size: 1.8em;
 }
 
+/* مكان الرسم البياني */
 .chart-container {
     position: relative;
     height: 400px;
@@ -267,6 +436,7 @@ input:focus {
     border-top: 4px solid #F3B229;
 }
 
+/* قسم الإحصائيات */
 #stats {
     padding: 25px;
     background: #ffffff;
@@ -296,6 +466,7 @@ input:focus {
     font-size: 1.4em;
 }
 
+/* الشبكة اللي فيها كروت الأرقام */
 .stats-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
@@ -303,21 +474,73 @@ input:focus {
     margin-top: 20px;
 }
 
+/* الكارت بتاع كل رقم */
 .stat-card {
     background: #ffffff;
-    padding: 15px;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
+    padding: 18px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
     text-align: center;
-    border: 1px solid #e2e6ea;
-    border-bottom: 3px solid #002D62;
-    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    border: 2px solid #e2e6ea;
+    border-bottom: 4px solid #002D62;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #002D62, #F3B229);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.stat-card:hover::before {
+    opacity: 1;
 }
 
 .stat-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.05);
+    transform: translateY(-8px);
+    box-shadow: 0 12px 24px rgba(0, 45, 98, 0.15);
     border-color: #F3B229;
+}
+
+/* الكارت لما النتيجة أعلى من المتوقع - خضر */
+.stat-card.higher {
+    border-bottom-color: #22c55e;
+    background: linear-gradient(135deg, #ffffff 0%, #f0fdf4 100%);
+}
+
+.stat-card.higher::before {
+    background: linear-gradient(90deg, #22c55e, #86efac);
+    opacity: 1;
+}
+
+/* الكارت لما النتيجة أقل من المتوقع - أحمر */
+.stat-card.lower {
+    border-bottom-color: #ef4444;
+    background: linear-gradient(135deg, #ffffff 0%, #fef2f2 100%);
+}
+
+.stat-card.lower::before {
+    background: linear-gradient(90deg, #ef4444, #fca5a5);
+    opacity: 1;
+}
+
+/* الكارت لما النتيجة تساوي المتوقع - ذهبي */
+.stat-card.equal {
+    border-bottom-color: #F3B229;
+    background: linear-gradient(135deg, #ffffff 0%, #fffbeb 100%);
+}
+
+.stat-card.equal::before {
+    background: linear-gradient(90deg, #F3B229, #fcd34d);
+    opacity: 1;
 }
 
 .stat-label {
@@ -337,6 +560,183 @@ input:focus {
 .stat-card div {
     color: #4b5563;
     font-size: 0.95em;
+}
+
+/* عدد المرات اللي ظهر فيها الرقم */
+.result-count {
+    font-weight: 600;
+    color: #002D62;
+    font-size: 1.05em;
+    margin-bottom: 8px;
+}
+
+/* النتيجة الفعلية - ملونة بالذهبي */
+.actual-result {
+    color: #F3B229 !important;
+    font-weight: 700 !important;
+    font-size: 1.1em !important;
+}
+
+/* قسم التوقع والمقارنة */
+.prediction-section {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 2px dashed #e2e6ea;
+}
+
+/* مكان عرض الاحتمال المتوقع */
+.expected-prob {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+    padding: 8px 12px;
+    background: rgba(0, 45, 98, 0.05);
+    border-radius: 6px;
+}
+
+.pred-label {
+    font-weight: 600;
+    color: #002D62;
+    font-size: 0.9em;
+}
+
+.pred-value {
+    font-weight: 700;
+    color: #002D62;
+    font-size: 1.1em;
+}
+
+/* الشارة اللي بتقول أعلى أو أقل من المتوقع */
+.comparison-badge {
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-weight: 700;
+    font-size: 0.95em;
+    text-align: center;
+    display: inline-block;
+    width: 100%;
+}
+
+/* الشارة الخضراء - أعلى من المتوقع */
+.comparison-badge.higher {
+    background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+    color: white;
+    box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
+}
+
+/* الشارة الحمراء - أقل من المتوقع */
+.comparison-badge.lower {
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+    color: white;
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+}
+
+/* الشارة الذهبية - تساوي المتوقع */
+.comparison-badge.equal {
+    background: linear-gradient(135deg, #F3B229 0%, #eab308 100%);
+    color: white;
+    box-shadow: 0 4px 12px rgba(243, 178, 41, 0.3);
+}
+
+/* قسم قانون الاحتمال الديناميكي */
+.probability-law-section {
+    background: linear-gradient(135deg, #fff9e6 0%, #fff3cd 100%);
+    padding: 20px;
+    border-radius: 15px;
+    margin-bottom: 20px;
+    border: 2px solid rgba(243, 178, 41, 0.3);
+    box-shadow: 0 4px 12px rgba(243, 178, 41, 0.15);
+}
+
+.probability-law-section h4 {
+    color: #002D62;
+    margin: 0 0 15px 0;
+    font-size: 1.3em;
+}
+
+/* عرض القانون كسر */
+.law-formula-display {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.law-formula-display .formula-main {
+    font-size: 1.3em;
+    font-weight: 700;
+    color: #002D62;
+}
+
+.law-formula-display .fraction {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: white;
+    padding: 12px 18px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    min-width: 180px;
+}
+
+.law-formula-display .numerator {
+    font-weight: 600;
+    color: #002D62;
+    text-align: center;
+    padding-bottom: 6px;
+    border-bottom: 2px solid #F3B229;
+    width: 100%;
+    font-size: 0.9em;
+}
+
+.law-formula-display .fraction-line {
+    height: 2px;
+    background: #F3B229;
+    width: 100%;
+    margin: 6px 0;
+}
+
+.law-formula-display .denominator {
+    font-weight: 600;
+    color: #002D62;
+    text-align: center;
+    padding-top: 6px;
+    width: 100%;
+    font-size: 0.9em;
+}
+
+/* خطوات الحساب داخل كل كارت */
+.calculation-steps {
+    background: rgba(243, 178, 41, 0.1);
+    padding: 12px;
+    border-radius: 8px;
+    margin-top: 10px;
+    border-left: 3px solid #F3B229;
+}
+
+.calc-step {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 6px;
+    font-size: 0.85em;
+}
+
+.calc-step:last-child {
+    margin-bottom: 0;
+}
+
+.calc-step .calc-label {
+    font-weight: 700;
+    color: #002D62;
+    min-width: auto;
+}
+
+.calc-step .calc-value {
+    font-family: 'Courier New', monospace;
+    color: #4b5563;
+    font-weight: 600;
 }
 
 /* الحركة البسيطة اللي بتظهر مع النتائج */
